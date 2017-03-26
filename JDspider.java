@@ -19,7 +19,7 @@ public class JDspider {
     ArrayList<String> notVisited=new ArrayList<>();
     HashMap<String,Integer> depths=new HashMap<>();
     int maxDepth=3;
-    int maxthread=5;
+    int maxthread=10;
     int waitNum=0;
     public static final Object signal=new Object();
 
@@ -63,6 +63,7 @@ public class JDspider {
                 parseContent(doc,depth+1,url);
             }
         } catch (IOException e) {
+            System.out.println("发现一个无效的链接："+url+"<--------------------------------");
             e.printStackTrace();
         }
 
