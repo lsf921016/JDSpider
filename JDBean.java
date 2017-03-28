@@ -39,6 +39,9 @@ public class JDBean {
             img = doc.select("img[src]").first();
             this.pictureSrc=img.attr("abs:src");
         }
+        if(pictureSrc==null){
+            pictureSrc="";
+        }
 
 
 
@@ -51,6 +54,9 @@ public class JDBean {
             name=doc.select("div#name h1").first();
             this.name=name.text();
         }
+        if(this.name==null){
+            this.name="";
+        }
 
 
         //选出商品详情
@@ -62,10 +68,13 @@ public class JDBean {
             details = doc.select("ul#parameter2 li");
             this.detail=details.text();
         }
+        if(this.detail==null){
+            this.detail="";
+        }
 
-        //获取价格
-        String priceUrl = "http://p.3.cn/prices/mgets?skuIds=J_" + number + ",J_&type=1";
-        setPrice(priceUrl);
+//        //获取价格
+//        String priceUrl = "http://p.3.cn/prices/mgets?skuIds=J_" + number + ",J_&type=1";
+//        setPrice(priceUrl);
 
         //获取评论信息
         String commentUrl = "http://club.jd.com/productpage/p-" + number + "-s-0-t-3-p-0.html";
@@ -84,7 +93,6 @@ public class JDBean {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private void setPrice(String priceUrl) {
