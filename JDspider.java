@@ -1,5 +1,6 @@
 package JDSpider;
 
+import JDSpider.dao.DBcontrol;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -55,10 +56,10 @@ public class JDspider {
         try {
             Document doc= Jsoup.connect(url).get();
             int depth=depths.get(url);
-            System.out.println("开始爬取网页："+url);
-            System.out.println("深度："+depth);
-            System.out.println("执行线程："+Thread.currentThread().getName());
-            System.out.println("------------------------------");
+//            System.out.println("开始爬取网页："+url);
+//            System.out.println("深度："+depth);
+//            System.out.println("执行线程："+Thread.currentThread().getName());
+//            System.out.println("------------------------------");
             if (depth<maxDepth){
                 parseContent(doc,depth+1,url);
             }
@@ -75,8 +76,14 @@ public class JDspider {
         Matcher matcher=pattern.matcher(url);
         String number;
         if (matcher.find()&&(number=matcher.group(1))!=null){
-            System.out.println("开始解析编号为"+number+"的商品");
+//            System.out.println("开始解析编号为"+number+"的商品");
             JDBean jc=new JDBean(doc,url,number);
+            if (DBcontrol.insertToDB(jc)){
+                System.out.println("编号为："+number+"的商品信息已存入数据库");
+            }
+            else {
+                System.out.println(number+"存入数据库失败");
+            }
             System.out.println(jc);
         }
 
@@ -116,7 +123,7 @@ public class JDspider {
             for (Element channel:channels){
                 String link=channel.attr("abs:href");
                 if (!allUrlset.contains(link)){
-                    System.out.println("加入新频道："+link);
+//                    System.out.println("加入新频道："+link);
                     addUrl(link,1);
                     if (waitNum>0){
                         synchronized (signal){
